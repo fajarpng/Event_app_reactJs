@@ -14,12 +14,56 @@ class Dashboard extends Component {
 	constructor(props) {
         super(props);
          this.state = {
+            search: '',
+            page: 1,
+            isFrist: true,
+            isLast: false,
          };
    }
 
-   getEvents = () => {
-      const url = '?limit=6&page=1';
-      this.props.getEvent({url})
+   getEvents = param => {
+
+      const url = `?limit=6&${param}`;
+
+      this.props.getEvent({url});
+
+      const { pageInfo } = this.props.events.data
+
+      if (pageInfo.page <= 1) {
+         this.setState({ isFrist : true})
+      } else {
+         this.setState({ isFrist : false})
+      }
+      if (pageInfo.page >= pageInfo.totalPage){
+         this.setState({ isLast : true})
+      } else {
+         this.setState({ isLast : false})
+      }
+   }
+
+   onSearch = e => {
+      e.preventDefault();
+
+      const { search, page } = this.state
+      const param = `page=${page}&search=${search}`
+
+      this.getEvents(param)
+   }
+
+   getNext = () => {
+
+      const { search, page } = this.state
+      const param = `page=${page+1}&search=${search}`
+
+      this.getEvents(param)
+   }
+
+   getPrev = () => {
+
+      const { search, page } = this.state
+      const param = `page=${page-1}&search=${search}`
+
+      this.getEvents(param)
    }
 
    componentDidMount() {
@@ -27,7 +71,8 @@ class Dashboard extends Component {
    }
 
 	render() {
-		const { data } = this.props.events
+      const { data } = this.props.events.data
+		const { isFrist, isLast } = this.state
 
       const lists = data ? data : []
 
@@ -37,9 +82,13 @@ class Dashboard extends Component {
 				<div className="p-3 mt-5">
                <Row>
                   <Col xs={12} lg={6}>
-                     <Form className="mt-2 mb-2 w-100 d-flex flex-row align-items-center">
-                        <Form.Control type="text" placeholder="Search" className="mr-sm-2" />
-                        <Button variant="primary">Search</Button>
+                     <Form className="mt-2 mb-2 w-100 d-flex flex-row" onSubmit={this.onSearch}>
+                        <Form.Control
+                           type="text"
+                           placeholder="Search"
+                           className="mr-sm-2"
+                           onChange={ e => this.setState({search: e.target.value, page: 1}) }/>
+                        <Button variant="primary" type="submit">Search</Button>
                      </Form>
                   </Col>
                </Row>
@@ -50,6 +99,22 @@ class Dashboard extends Component {
                      </Col>
                      ))}
 					</Row>
+               <div className='d-flex flex-row justify-content-between mt-5 mb-4'>
+                  <Button
+                     variant="primary"
+                     disabled={isFrist}
+                     onClick={ this.getPrev }
+                     >
+                     Seblumnya
+                  </Button>
+                  <Button
+                     variant="primary"
+                     disabled={isLast}
+                     onClick={ this.getNext }
+                     >
+                     Selanjutnya
+                  </Button>
+               </div>
 				</div>
 			</>
 			)

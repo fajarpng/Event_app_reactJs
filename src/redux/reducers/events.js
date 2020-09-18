@@ -25,7 +25,7 @@ const reducer = (state = defaultState, action) => {
       return {
         ...state,
         isLoading : false,
-        data : action.payload.data.data,
+        data : action.payload.data,
       }
     }
     // add Promise

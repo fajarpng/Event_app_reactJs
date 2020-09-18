@@ -24,19 +24,31 @@ class Home extends Component {
          };
     }
 
-    isValid = () => {
+    isValid = e => {
+    	e.preventDefault();
+
     	const { title, location, note, participants, date } = this.state
 
     	if (title !== '' && location !== '' && note !== '' && participants !== ''&& date !== '') {
     		if (note.length > 50) {
-    			this.setState({ isFilled: true })
-    		};
-    	};
+    			this.onSubmit()
+    		} else {
+	    		Swal.fire({
+	                icon: 'error',
+	                title: 'Oops...',
+	                text: 'Note harus lebih dari 50 karakter',
+	                })
+	    	}
+    	} else {
+    		Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Pastikan semua form terisi',
+                })
+    	}
     }
 
-    onSubmit = (e) => {
-    	e.preventDefault();
-
+    onSubmit = () => {
     	const body = this.state
     	const url = ''
 
@@ -62,7 +74,6 @@ class Home extends Component {
             }
         this.props.clear()
         }
-        console.log(msg)
     	//this.isValid();
     }
 
@@ -73,7 +84,7 @@ class Home extends Component {
 			<>
 				<TopNavbar/>
 				<div className="p-5 mt-5">
-					<Form className="w-100 h-100  d-flex justify-content-center"  onSubmit={this.onSubmit}>
+					<Form className="w-100 h-100  d-flex justify-content-center"  onSubmit={this.isValid}>
 						<Row>
 							<Col className="d-flex align-items-center">
 								<Image src={schadule} fluid />

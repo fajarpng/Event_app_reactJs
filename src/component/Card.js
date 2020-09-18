@@ -8,6 +8,7 @@ export const Cards = props => {
 	const { note, image, title, date, participants, location } = props.data;
 
 	const img = image ? image : defImg;
+	const _date = date.slice(0,10)
 
 	return(
 		<Card className="shadow">
@@ -17,7 +18,7 @@ export const Cards = props => {
 		  	<Card.Body>
 		  		<Card.Text className="">{location}</Card.Text>
 			    <Card.Title>{title}</Card.Title>
-			    <Card.Text className="text-muted">{date}</Card.Text>
+			    <Card.Text className="text-muted">{_date}</Card.Text>
 			    <Participant data={participants}/>
 		  	</Card.Body>
 		  	<Card.Body className="bg-light">
