@@ -38,7 +38,7 @@ const Participant = props => {
 	return (
 		<Row>
 			{participant.map((val) => ( 
-				<Col xs={12} lg={4}  className="mt-3">
+				<Col xs={12} lg={4}  className="mt-2">
 				 	<p>{val}</p>
 				</Col>
 				))}

@@ -11,6 +11,7 @@ export const TopNavbar = () => {
 		    <Nav className="mr-auto">
 		      <Nav.Link href="/">Add Event</Nav.Link>
 		      <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+		      <Nav.Link href="/table">Table</Nav.Link>
 		    </Nav>
 		  </Navbar.Collapse>
 	  	</Navbar>
